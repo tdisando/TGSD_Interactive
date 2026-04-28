@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGSD Explorer — Volcanic Grain-Size Distributions</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0f0d;
+    --bg2: #161713;
+    --bg3: #1e1f1b;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e4d6;
+    --text2: #9a9688;
+    --text3: #5a5850;
+    --accent: #c8b97a;
+    --accent2: #8fa86e;
+    --exp: #4a9eca;
+    --pl1: #e07845;
+    --pl2: #6fb86a;
+    --wei: #9b8dd4;
+    --font-head: 'Fraunces', Georgia, serif;
+    --font-mono: 'DM Mono', 'Courier New', monospace;
+    --radius: 6px;
+    --radius-lg: 12px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  /* HEADER */
+  header {
+    padding: 28px 36px 20px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left h1 {
+    font-family: var(--font-head);
+    font-size: 26px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+  .header-left h1 span { color: var(--accent); }
+  .header-left p {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .axis-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 3px;
+  }
+  .axis-btn {
+    padding: 5px 14px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .axis-btn.active {
+    background: var(--bg2);
+    color: var(--accent);
+    border: 0.5px solid var(--border2);
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 0;
+  }
+
+  /* SIDEBAR */
+  aside {
+    border-right: 0.5px solid var(--border);
+    padding: 20px 18px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 4px;
+    padding-left: 2px;
+  }
+
+  /* DIST CARDS */
+  .dist-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+  }
+  .dist-card:hover { border-color: var(--border2); background: var(--bg2); }
+  .dist-card.active { background: var(--bg3); }
+  .dist-card.active.exp { border-color: var(--exp); }
+  .dist-card.active.pl1 { border-color: var(--pl1); }
+  .dist-card.active.pl2 { border-color: var(--pl2); }
+  .dist-card.active.wei { border-color: var(--wei); }
+
+  .dc-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .dc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dc-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .dc-sub { font-size: 10px; color: var(--text3); line-height: 1.4; }
+
+  /* PARAMS SECTION */
+  .params-section {
+    margin-top: 12px;
+    border-top: 0.5px solid var(--border);
+    padding-top: 12px;
+  }
+  .param-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .param-label {
+    font-size: 10px;
+    color: var(--text2);
+    min-width: 0;
+    flex: 1;
+    line-height: 1.3;
+  }
+  .param-label span { display: block; font-size: 9px; color: var(--text3); }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 90px;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .param-val {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* CHART AREA */
+  .chart-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 28px 20px 20px;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .chart-wrap {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+  }
+
+  /* INFO PANEL */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .info-cell {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+  }
+  .info-cell-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+  .info-cell-text {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .info-cell-text b { color: var(--text); font-weight: 500; }
+
+  /* DEPOSIT TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 0.5px solid;
+    font-family: var(--font-mono);
+  }
+
+  /* PHI RULER annotation */
+  .phi-ruler {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 10px;
+    color: var(--text3);
+    padding: 0 0 2px 48px;
+    letter-spacing: 0.02em;
+  }
+  .phi-label { flex: 1; text-align: center; }
+  .phi-ruler-title { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); padding-left: 48px; margin-bottom: 3px; }
+
+  /* LEGEND */
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 11px;
+    color: var(--text2);
+    padding: 0 0 4px 0;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-sq { width: 10px; height: 10px; border-radius: 2px; }
+
+  @media (max-width: 800px) {
+    main { grid-template-columns: 1fr; }
+    aside { border-right: none; border-bottom: 0.5px solid var(--border); }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Volcanic <span>TGSD</span> Explorer</h1>
+    <p>Total grain-size distribution · Eruption source parameters</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:11px;color:var(--text3)">x-axis</span>
+    <div class="axis-toggle">
+      <button class="axis-btn active" id="btn-phi" onclick="setAxis('phi')">ϕ (phi)</button>
+      <button class="axis-btn" id="btn-mm" onclick="setAxis('mm')">mm</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <aside>
+    <div class="sidebar-label">Distribution model</div>
+
+    <button class="dist-card exp active" onclick="setD('exp')">
+      <div class="dc-top">
+        <div class="dc-dot" style="background:var(--exp)"></div>
+        <div class="dc-name">Exponential</div>
+      </div>
+      <div class="dc-sub">Constant decay rate · single fragmentation mechanism</div>
+    </button>
+
+    <button class="dist-card pl1" onclick="setD('pl1')">
+      <div class="dc-top">
+        <div class="dc-dot" style="background:var(--pl1)"></div>
+        <div class="dc-name">Power law I</div>
+      </div>
+      <div class="dc-sub">Fractal · scale-invariant · unbounded</div>
+    </button>
+
+    <button class="dist-card pl2" onclick="setD('pl2')">
+      <div class="dc-top">
+        <div class="dc-dot" style="background:var(--pl2)"></div>
+        <div class="dc-name">Power law II</div>
+      </div>
+      <div class="dc-sub">Truncated · physically bounded · ESP-ready</div>
+    </button>
+
+    <button class="dist-card wei" onclick="setD('wei')">
+      <div class="dc-top">
+        <div class="dc-dot" style="background:var(--wei)"></div>
+        <div class="dc-name">Weibull / Rosin-Rammler</div>
+      </div>
+      <div class="dc-sub">Versatile · k controls sorting · modal or monotonic</div>
+    </button>
+
+    <div class="params-section">
+      <div class="sidebar-label">Parameters</div>
+      <div id="pctrl"></div>
+    </div>
+  </aside>
+
+  <div class="chart-area">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="legend-row" id="legend-row"></div>
+      <div style="font-size:10px;color:var(--text3);font-style:italic">ϕ = −log₂(d mm) · coarse ← → fine</div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="cv" role="img" aria-label="TGSD grain size phi vs weight percentage bar chart"></canvas>
+    </div>
+
+    <div class="info-grid" id="info-grid"></div>
+  </div>
+</main>
+
+<script>
+const PHI_BINS = [-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10];
+const PHI_MM   = PHI_BINS.map(p => Math.pow(2,-p));
+
+function fmtMm(mm){
+  if(mm >= 64)  return mm.toFixed(0)+'mm';
+  if(mm >= 1)   return mm.toFixed(1)+'mm';
+  if(mm >= 0.1) return mm.toFixed(2)+'mm';
+  return (mm*1000).toFixed(0)+'µm';
+}
+
+const DISTS = {
+  exp:{
+    label:'Exponential', cls:'exp', color:'#4a9eca',
+    params:[
+      {id:'lam', label:'λ — rate', sub:'coarse bias ↑ with λ', min:0.2, max:3, step:0.1, val:0.8}
+    ],
+    wt(phi,p){ const x=phi+4; return x>=0?p.lam*Math.exp(-p.lam*x):0; },
+    origin:'Suzuki 1983; Bonadonna & Houghton 2005 — early mass-balance and Tephra2 models.',
+    process:'Single-stage magmatic fragmentation in sustained Plinian columns. Mass decays monotonically from coarse to fine with no characteristic grain-size mode.',
+    deposits:[{n:'Plinian fall',c:'#4a9eca'},{n:'Sub-Plinian',c:'#6fb86a'}]
+  },
+  pl1:{
+    label:'Power law I', cls:'pl1', color:'#e07845',
+    params:[
+      {id:'alpha', label:'α — exponent', sub:'log-log slope', min:1.1, max:4, step:0.1, val:2.2},
+      {id:'phi0',  label:'ϕ₀ — onset',  sub:'largest clast phi', min:-4, max:2, step:0.5, val:-2}
+    ],
+    wt(phi,p){ const x=phi-p.phi0; return x>0?Math.pow(x,-p.alpha):0; },
+    origin:'Turcotte 1986 (fractal fragmentation theory); Kaminski & Jaupart 1998 (tephra application).',
+    process:'Scale-invariant breakage — phreatomagmatic surges, Plinian jets, multi-stage cascades. Linear in log-log space; no preferred grain size; extends to infinity.',
+    deposits:[{n:'Plinian fall',c:'#4a9eca'},{n:'Phreatomagmatic',c:'#e07845'}]
+  },
+  pl2:{
+    label:'Power law II (truncated)', cls:'pl2', color:'#6fb86a',
+    params:[
+      {id:'alpha', label:'α — exponent',   sub:'fractal slope',     min:1.1, max:4,  step:0.1, val:2.0},
+      {id:'phi0',  label:'ϕ_min (coarse)', sub:'largest clast',     min:-4,  max:0,  step:0.5, val:-3},
+      {id:'phi1',  label:'ϕ_max (fine)',   sub:'instrument cutoff', min:5,   max:12, step:0.5, val:9}
+    ],
+    wt(phi,p){ if(phi<p.phi0||phi>p.phi1)return 0; return Math.pow(phi-p.phi0+0.01,-p.alpha); },
+    origin:'Bonadonna et al. 2015; Rossi et al. 2021 — refined for Fall3D / TephraProb inversions.',
+    process:'Same fractal character as PL-I but with physical bounds: coarse cutoff from conduit width or largest clast; fine cutoff from aerodynamic settling or sieve resolution.',
+    deposits:[{n:'Plinian fall',c:'#4a9eca'},{n:'Sub-Plinian',c:'#6fb86a'},{n:'Phreatomagmatic',c:'#e07845'}]
+  },
+  wei:{
+    label:'Weibull / Rosin-Rammler', cls:'wei', color:'#9b8dd4',
+    params:[
+      {id:'k',     label:'k — shape',       sub:'k<1 fine-skewed · k>2 modal', min:0.5, max:5,  step:0.1, val:2.0},
+      {id:'phi_c', label:'ϕ_c — median grain', sub:'shifts modal peak',        min:-2,  max:8,  step:0.5, val:3.0}
+    ],
+    wt(phi,p){
+      const lam=p.phi_c/Math.pow(Math.log(2),1/p.k);
+      const x=(phi+4)/Math.max(lam,0.1);
+      return x>0?p.k*Math.pow(x,p.k-1)*Math.exp(-Math.pow(x,p.k)):0;
+    },
+    origin:'Rosin & Rammler 1933 (crushed coal); Weibull 1939 (material strength); volcanology: Pfeiffer et al. 2005; Bonadonna & Costa 2012; Pioli et al. 2019.',
+    process:'k < 1 → fine-ash monotonic (Vulcanian, phreatomagmatic, PDC). k ≈ 1 → exponential (Plinian). k 2–3 → unimodal sorted (sub-Plinian). k ≈ 3.5 → near-Gaussian (well-sorted fall). ϕ_c shifts mode.',
+    deposits:[{n:'Vulcanian',c:'#e07845'},{n:'Phreatomagmatic',c:'#e07845'},{n:'Sub-Plinian',c:'#6fb86a'},{n:'PDC ash',c:'#9b8dd4'}]
+  }
+};
+
+let cur='exp', axis='phi', chart=null, ps={};
+
+function initPs(k){ ps={}; DISTS[k].params.forEach(p=>{ ps[p.id]=p.val; }); }
+
+function buildCtrl(k){
+  const d=DISTS[k];
+  document.getElementById('pctrl').innerHTML=d.params.map(p=>`
+    <div class="param-row">
+      <div class="param-label">${p.label}<span>${p.sub}</span></div>
+      <input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${ps[p.id]}"
+        oninput="upP('${p.id}',+this.value)">
+      <div class="param-val" id="pv-${p.id}">${(+ps[p.id]).toFixed(1)}</div>
+    </div>`).join('');
+}
+
+function upP(id,v){ ps[id]=v; document.getElementById('pv-'+id).textContent=v.toFixed(1); render(); }
+function setAxis(a){
+  axis=a;
+  document.getElementById('btn-phi').classList.toggle('active', a==='phi');
+  document.getElementById('btn-mm').classList.toggle('active',  a==='mm');
+  render();
+}
+
+function getData(){
+  const d=DISTS[cur];
+  const raw=PHI_BINS.map((phi,i)=>({phi,mm:PHI_MM[i],w:Math.max(0,d.wt(phi,ps))}));
+  const sum=raw.reduce((s,r)=>s+r.w,0)||1;
+  return raw.map(r=>({...r,wt:Math.round(r.w/sum*1000)/10}));
+}
+
+function render(){
+  const d=DISTS[cur];
+  const data=getData();
+  const labels=axis==='phi'
+    ? PHI_BINS.map(p=>'ϕ '+p)
+    : PHI_MM.map(m=>fmtMm(m));
+  const wts=data.map(r=>r.wt);
+  const xTitle=axis==='phi'?'Grain size  (phi, ϕ)  —  coarse ← · · · → fine':'Grain size (mm)  —  coarse ← · · · → fine';
+
+  if(chart){
+    chart.data.labels=labels;
+    chart.data.datasets[0].data=wts;
+    chart.data.datasets[0].borderColor=d.color;
+    chart.data.datasets[0].backgroundColor=d.color+'30';
+    chart.options.scales.x.title.text=xTitle;
+    chart.update('none');
+    return;
+  }
+
+  chart=new Chart(document.getElementById('cv'),{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'wt%',
+        data:wts,
+        borderColor:d.color,
+        backgroundColor:d.color+'30',
+        borderWidth:1.5,
+        borderRadius:4,
+        borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:{duration:280},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#1e1f1b',
+          borderColor:'rgba(255,255,255,0.12)',
+          borderWidth:0.5,
+          titleColor:'#e8e4d6',
+          bodyColor:'#9a9688',
+          titleFont:{family:"'DM Mono',monospace",size:11},
+          bodyFont:{family:"'DM Mono',monospace",size:11},
+          callbacks:{
+            title:ctx=>{
+              const i=ctx[0].dataIndex;
+              return `ϕ ${PHI_BINS[i]}  ·  ${fmtMm(PHI_MM[i])}`;
+            },
+            label:ctx=>`wt% : ${ctx.parsed.y.toFixed(1)}`
+          }
+        }
+      },
+      scales:{
+        x:{
+          title:{display:true,text:xTitle,color:'#5a5850',font:{family:"'DM Mono',monospace",size:11}},
+          ticks:{color:'#5a5850',font:{family:"'DM Mono',monospace",size:10},maxRotation:45,autoSkip:false},
+          grid:{color:'rgba(255,255,255,0.04)'},
+          border:{color:'rgba(255,255,255,0.08)'}
+        },
+        y:{
+          title:{display:true,text:'Weight percentage (wt%)',color:'#5a5850',font:{family:"'DM Mono',monospace",size:11}},
+          ticks:{color:'#5a5850',font:{family:"'DM Mono',monospace",size:11},callback:v=>v+'%'},
+          grid:{color:'rgba(255,255,255,0.04)'},
+          border:{color:'rgba(255,255,255,0.08)'},
+          min:0
+        }
+      }
+    }
+  });
+}
+
+function buildLegend(k){
+  const d=DISTS[k];
+  document.getElementById('legend-row').innerHTML=
+    `<div class="legend-item"><div class="legend-sq" style="background:${d.color}"></div><span style="color:#e8e4d6">${d.label}</span></div>
+     <span style="color:#3a3930">|</span>
+     <span style="color:#5a5850">wt% normalised to 100%</span>`;
+}
+
+function buildInfo(k){
+  const d=DISTS[k];
+  const tags=d.deposits.map(dep=>
+    `<span class="tag" style="color:${dep.c};border-color:${dep.c}40;background:${dep.c}12">${dep.n}</span>`
+  ).join('');
+  document.getElementById('info-grid').innerHTML=`
+    <div class="info-cell">
+      <div class="info-cell-label">Original formulation</div>
+      <div class="info-cell-text">${d.origin}</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">Volcanic process &amp; deposit character</div>
+      <div class="info-cell-text">${d.process}
+        <div class="tags">${tags}</div>
+      </div>
+    </div>`;
+}
+
+function setD(k){
+  cur=k;
+  initPs(k);
+  document.querySelectorAll('.dist-card').forEach(c=>{
+    c.classList.remove('active');
+  });
+  document.querySelector('.dist-card.'+DISTS[k].cls).classList.add('active');
+  buildCtrl(k);
+  if(chart){chart.destroy();chart=null;}
+  render();
+  buildLegend(k);
+  buildInfo(k);
+}
+
+initPs('exp');
+buildCtrl('exp');
+render();
+buildLegend('exp');
+buildInfo('exp');
+</script>
+</body>
+</html>
