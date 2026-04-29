@@ -9,7 +9,7 @@ Inspired by study of radioactive decay from Rutherford and Soddy (1902; https://
 | **Exponential**         | λ (rate)                    | Near‑vent Plinian, data‑poor                        | Strictly monotonic log‑linear decay              |
 | **Power law I**         | α, x_min                    | Fractal fragmentation (phreatomagmatic, Plinian)    | Linear log‑log plot                              |
 | **Power law II**        | α, x_min, x_max             | Same as Power law I, but with observable limits     | Log‑log linear + roll‑off at tails               |
-| **Weibull / Rosin–Rammler** | k (shape), λ (scale)     | Most eruption types; default recommendation          | Unimodal or skewed; k controls shape             |
+| **Weibull / Rosin–Rammler** | k (shape), λ (scale)     | Most eruption types; most versatile         | Unimodal or skewed; k controls shape             |
 
 Trying to understand:
 - Deposit-based distributions of tephras in natural cases
