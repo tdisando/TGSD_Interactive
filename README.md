@@ -13,4 +13,5 @@ Inspired by study of radioactive decay from Rutherford and Soddy (1902; https://
 
 Trying to understand:
 - Deposit-based distributions of tephras in natural cases
+- Breakage probability per size step
 - An approach to magma fragmentation, yet ideally without atmospheric disturbances
