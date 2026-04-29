@@ -19,7 +19,7 @@ Trying to understand:
 | **Power law II**        | α, x_min, x_max             | Same as Power law I, but with observable limits     | Log‑log linear + roll‑off at tails               |
 | **Weibull / Rosin–Rammler** | k (shape), λ (scale)     | Most eruption types; most versatile         | Unimodal or skewed; k controls shape             |
 
-\
+---
 
 | Distribution | Equation | Parameters |
 |---|---|---|
