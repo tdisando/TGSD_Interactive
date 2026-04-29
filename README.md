@@ -20,7 +20,7 @@ Trying to understand:
 
 | Distribution | Equation | Parameters |
 |---|---|---|
-| Exponential | $$f(\phi) = \lambda \, e^{-\lambda (\phi - \phi_0)}$$ | $\lambda$ = rate; $\phi_0$ = onset phi |
-| Power law I | $$f(\phi) = \frac{\alpha-1}{\phi_{\min}}\left(\frac{\phi}{\phi_{\min}}\right)^{-\alpha}$$ | $\alpha$ = exponent; $\phi_{\min}$ = coarse bound |
-| Power law II | $$f(\phi) = \frac{1-\alpha}{\phi_{\max}^{1-\alpha}-\phi_{\min}^{1-\alpha}}\,\phi^{-\alpha}$$ | $\alpha$ = exponent; $\phi_{\min}$, $\phi_{\max}$ = bounds |
-| Weibull / Rosin-Rammler | $$f(\phi) = \frac{k}{\lambda}\left(\frac{\phi}{\lambda}\right)^{k-1}\exp\!\left[-\left(\frac{\phi}{\lambda}\right)^{k}\right]$$ | $k$ = shape; $\lambda$ = scale |
+| Exponential | $$f(\phi) = \lambda \, e^{-\lambda (\phi - \phi_0)}$$ | $\lambda$ = rate parameter (steepness of decay); $\phi_0$ = coarsest grain size (onset phi) |
+| Power law I | $$f(\phi) = \frac{\alpha-1}{\phi_{\min}}\left(\frac{\phi}{\phi_{\min}}\right)^{-\alpha}$$ | $\alpha$ = power-law exponent (fractal slope in log-log); $\phi_{\min}$ = lower bound — coarsest clast phi |
+| Power law II | $$f(\phi) = \frac{1-\alpha}{\phi_{\max}^{1-\alpha}-\phi_{\min}^{1-\alpha}}\,\phi^{-\alpha}$$ | $\alpha$ = fractal exponent; $\phi_{\min}$, $\phi_{\max}$ = coarse cutoff (largest clast, set by conduit or field observation) and fine cutoff (instrument resolution or aerodynamic settling limit) |
+| Weibull / Rosin-Rammler | $$f(\phi) = \frac{k}{\lambda}\left(\frac{\phi}{\lambda}\right)^{k-1}\exp\!\left[-\left(\frac{\phi}{\lambda}\right)^{k}\right]$$ | $k$ = shape parameter (controls sorting and skewness); $\lambda$ = scale parameter (characteristic grain size, related to median) |
