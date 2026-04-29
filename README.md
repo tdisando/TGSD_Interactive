@@ -1,7 +1,7 @@
-# TGSD_Interactive
+# Interactive Total Grain Size Distribution (TGSD)
 Exploring distribution curves for characterising pyroclastic deposits
 
-## About the models
+## About the model
 Inspired by study of radioactive decay from Rutherford and Soddy (1902; https://doi.org/10.1080/14786440209462856) and sequence of random events from Poisson (1837; https://doi.org/10.48550/arXiv.1902.02782), fractal fragmentation theory (pure and truncated Paretos) from Turcotte (1986; https://doi.org/10.1029/JB091iB02p01921) and Kaminski and Jaupart (1992; https://doi.org/10.1029/98JB02795), and  material failure test from Weibull (1939; https://doi.org/10.1115/1.4010337) and crushing coal from Rosin and Rammler (1933; https://doi.org/10.1007/BF01439773).
 
 
