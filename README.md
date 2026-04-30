@@ -4,22 +4,6 @@ Exploring distribution curves for characterising pyroclastic deposits
 
 ---
 
-## 📖 Table of Contents
-
-- [About the Model](#about-the-model)
-- [Distribution Models](#distribution-models)
-- [Quick Start](#quick-start)
-- [How to Use](#how-to-use)
-- [Features](#features)
-- [Technical Details](#technical-details)
-- [Repository Structure](#repository-structure)
-- [Contributing](#contributing)
-- [Citation](#citation)
-- [License](#license)
-- [Contact](#contact)
-
----
-
 ## About the Model
 
 ### Research Inspiration
@@ -92,51 +76,6 @@ The interactive tool is hosted on GitHub Pages:
 🔬 Scientifically rigorous distribution models  
 📊 Four distribution models (Exponential, Power Law I/II, Weibull)  
 🎯 Eruption style interpretation guidance
-
----
-
-## Technical Details
-
-**Browser Compatibility:** Chrome, Firefox, Safari, Edge (latest versions)  
-**Dependencies:** Pure HTML5 + JavaScript (no external libraries)  
-**File Size:** ~17 KB  
-**Performance:** Works offline once loaded
-
----
-
-## Repository Structure
-
-```
-TGSD_Interactive/
-├── index.html          # Main interactive tool
-├── README.md           # Documentation
-├── LICENSE             # MIT License
-```
-
----
-
-## Contributing
-
-We welcome contributions! Found a bug? Have a feature idea? [Open an issue](https://github.com/tdisando/TGSD_Interactive/issues) or submit a Pull Request.
-
----
-
-## Citation
-
-If you use this tool in your research, please cite:
-
-**BibTeX:**
-```bibtex
-@software{tdisando2026tgsd,
-  author = {Disando, T.},
-  title = {Interactive Total Grain Size Distribution (TGSD)},
-  year = {2026},
-  url = {https://github.com/tdisando/TGSD_Interactive}
-}
-```
-
-**APA:**
-Disando, T. (2026). Interactive Total Grain Size Distribution (TGSD). GitHub. https://github.com/tdisando/TGSD_Interactive
 
 ---
 
