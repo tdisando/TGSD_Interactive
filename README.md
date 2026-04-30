@@ -56,7 +56,7 @@ The TGSD model characterizes pyroclastic deposits by exploring how grain size di
 | **Exponential** | $$f(\phi) = \lambda \, e^{-\lambda (\phi - \phi_0)}$$ | $\lambda$ = rate parameter (steepness of decay); $\phi_0$ = coarsest grain size (onset phi) |
 | **Power Law I** | $$f(\phi) = \frac{\alpha-1}{\phi_{\min}}\left(\frac{\phi}{\phi_{\min}}\right)^{-\alpha}$$ | $\alpha$ = power-law exponent (fractal slope in log-log); $\phi_{\min}$ = lower bound |
 | **Power Law II** | $$f(\phi) = \frac{1-\alpha}{\phi_{\max}^{1-\alpha}-\phi_{\min}^{1-\alpha}}\,\phi^{-\alpha}$$ | $\alpha$ = fractal exponent; $\phi_{\min}$ = coarse cutoff; $\phi_{\max}$ = fine cutoff |
-| **Weibull / Rosin-Rammler** | $$f(\phi) = \frac{k}{\lambda}\left(\frac{\phi}{\lambda}\right)^{k-1}\exp\!\left[-\left(\frac{\phi}{\lambda}\right)^{k}\right]$$ | $k$ = shape parameter (control sorting); $\lambda$ = scale parameter (control decay) |
+| **Weibull / Rosin-Rammler** | $$f(\phi) = \frac{k}{\lambda}\left(\frac{\phi}{\lambda}\right)^{k-1}\exp\left[-\left(\frac{\phi}{\lambda}\right)^{k}\right]$$ | $k$ = shape parameter (control sorting); $\lambda$ = scale parameter (control decay) |
 
 ---
 
