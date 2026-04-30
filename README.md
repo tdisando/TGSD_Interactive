@@ -6,7 +6,7 @@ Exploring distribution curves for characterising pyroclastic deposits
 
 ## About the Model
 
-### Research Inspiration
+### Inspiration
 
 This tool is grounded in classic work on decay processes, rare‑event statistics, and fragmentation:
 
