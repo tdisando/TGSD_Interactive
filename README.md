@@ -8,9 +8,24 @@ Exploring distribution curves for characterising pyroclastic deposits
 
 ### Research Inspiration
 
-This tool is inspired by fundamental studies in:
-- **Radioactive decay** from Rutherford and Soddy (1902; [DOI: 10.1080/14786440209462856](https://doi.org/10.1080/14786440209462856))
-- **Sequence of random events** from Poisson (1837)
+This tool is grounded in classic work on decay processes, rare‑event statistics, and fragmentation:
+
+- **Rutherford & Soddy (1902)** — Introduced the concept of exponential decay and memoryless natural processes.  
+  https://doi.org/10.1080/14786440209462856
+
+- **Poisson (1837)** — Established the statistical framework for sequences of rare, independent events.
+
+- **Turcotte (1986)** — Applied rare‑event reasoning to brittle failure, showing that crustal fragmentation produces fractal (power‑law) size distributions.  
+  https://doi.org/10.1029/JB091iB02p01921
+
+- **Kaminski & Jaupart (1998)** — Demonstrated that explosive magma fragmentation yields characteristic exponential‑type pyroclast size distributions.  
+  https://doi.org/10.1029/98JB02795
+
+- **Rosin & Rammler (1933)** — Developed an exponential‑based particle‑size law widely used for ground materials and later adopted in volcanology.  
+  https://doi.org/10.1007/BF01439773
+
+- **Weibull (1939)** — Generalized exponential models to describe material strength and age‑dependent failure, forming the modern Weibull distribution.  
+  https://doi.org/10.1115/1.4010337
 
 ### Research Questions
 
