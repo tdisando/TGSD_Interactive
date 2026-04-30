@@ -60,40 +60,6 @@ The TGSD model characterizes pyroclastic deposits by exploring how grain size di
 
 ---
 
-## Quick Start
-
-### 🌐 Try It Online
-
-The interactive tool is hosted on GitHub Pages:
-
-👉 **[https://tdisando.github.io/TGSD_Interactive/](https://tdisando.github.io/TGSD_Interactive/)**
-
-### 💻 Local Setup
-
-1. Clone: `git clone https://github.com/tdisando/TGSD_Interactive.git`
-2. Open `index.html` in your browser
-3. Or use: `python -m http.server 8000` and navigate to `http://localhost:8000`
-
----
-
-## How to Use
-
-1. **Select Distribution Model** from the dropdown menu
-2. **Adjust Parameters** using sliders—real-time updates show distribution changes
-3. **Interpret Plots**: Left plot (linear scale), Right plot (log-log scale)
-4. **Analyze**: Compare predictions with your pyroclastic deposit data
-
----
-
-## Features
-
-✨ Interactive visualization with real-time parameter adjustment  
-🔬 Scientifically rigorous distribution models  
-📊 Four distribution models (Exponential, Power Law I/II, Weibull)  
-🎯 Eruption style interpretation guidance
-
----
-
 ## License
 
 MIT License — see [LICENSE](LICENSE) file for details. Free to use, modify, and distribute with attribution.
