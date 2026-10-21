@@ -1,4 +1,4 @@
-# Interactive Total Grain Size Distribution (TGSD)
+# Interactive Grain Size Distribution (GSD)
 
 Exploring distribution curves for characterising pyroclastic deposits
 
